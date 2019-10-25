@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "237845304386",
+    "firebase_url": "https://one-tap-xp-booster-5-53028525.firebaseio.com",
+    "project_id": "one-tap-xp-booster-5-53028525",
+    "storage_bucket": "one-tap-xp-booster-5-53028525.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237845304386:android:539854f5363a39145049db",
+        "android_client_info": {
+          "package_name": "com.nightowldevelopers.onetapxpbooster5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237845304386-5ltmt3h2bdo2c1eru1aqsupplep28b5q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nightowldevelopers.onetapxpbooster5",
+            "certificate_hash": "13d839a53d34eb5c3b6b81af86d0e3fd39d48513"
+          }
+        },
+        {
+          "client_id": "237845304386-8rhdkl36788esavigkjk5l88g808mvjl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC4iR0zyvNWe2SFzhehNryd0YqkoWbgT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237845304386-8rhdkl36788esavigkjk5l88g808mvjl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
