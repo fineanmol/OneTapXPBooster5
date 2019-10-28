@@ -5,39 +5,37 @@ Save this file as res/values/games-ids.xml in your project.
 -->
 <resources>
     <!-- app_id -->
-    <string name="app_id" translatable="false">894024961068</string>
-    <!-- package_name -->
-    <string name="package_name" translatable="false">com.nightowldevelopers.levelup2</string>
+    <string name="app_id" translatable="false">237845304386</string>
     <!-- achievement Level 1 -->
-    <string name="achievement_level_1" translatable="false">CgkIrJipwIIaEAIQAQ</string>
+    <string name="achievement_level_1" translatable="false">CgkIwqi9hfYGEAIQAA</string>
     <!-- achievement Level 2 -->
-    <string name="achievement_level_2" translatable="false">CgkIrJipwIIaEAIQAg</string>
+    <string name="achievement_level_2" translatable="false">CgkIwqi9hfYGEAIQAQ</string>
     <!-- achievement Level 3 -->
-    <string name="achievement_level_3" translatable="false">CgkIrJipwIIaEAIQAw</string>
+    <string name="achievement_level_3" translatable="false">CgkIwqi9hfYGEAIQAg</string>
     <!-- achievement Level 4 -->
-    <string name="achievement_level_4" translatable="false">CgkIrJipwIIaEAIQBA</string>
+    <string name="achievement_level_4" translatable="false">CgkIwqi9hfYGEAIQAw</string>
     <!-- achievement Level 5 -->
-    <string name="achievement_level_5" translatable="false">CgkIrJipwIIaEAIQBg</string>
+    <string name="achievement_level_5" translatable="false">CgkIwqi9hfYGEAIQBA</string>
     <!-- achievement Level 6 -->
-    <string name="achievement_level_6" translatable="false">CgkIrJipwIIaEAIQCA</string>
+    <string name="achievement_level_6" translatable="false">CgkIwqi9hfYGEAIQBQ</string>
     <!-- achievement Level 7 -->
-    <string name="achievement_level_7" translatable="false">CgkIrJipwIIaEAIQCQ</string>
+    <string name="achievement_level_7" translatable="false">CgkIwqi9hfYGEAIQBg</string>
     <!-- achievement Level 8 -->
-    <string name="achievement_level_8" translatable="false">CgkIrJipwIIaEAIQCg</string>
+    <string name="achievement_level_8" translatable="false">CgkIwqi9hfYGEAIQBw</string>
     <!-- achievement Level 9 -->
-    <string name="achievement_level_9" translatable="false">CgkIrJipwIIaEAIQCw</string>
-    <!-- achievement The Collector -->
-    <string name="achievement_the_collector" translatable="false">CgkIrJipwIIaEAIQDA</string>
+    <string name="achievement_level_9" translatable="false">CgkIwqi9hfYGEAIQCA</string>
+    <!-- achievement Level 10 -->
+    <string name="achievement_level_10" translatable="false">CgkIwqi9hfYGEAIQCQ</string>
+    <!-- achievement Level 11 -->
+    <string name="achievement_level_11" translatable="false">CgkIwqi9hfYGEAIQCg</string>
+    <!-- achievement Level 12 -->
+    <string name="achievement_level_12" translatable="false">CgkIwqi9hfYGEAIQCw</string>
+    <!-- achievement Level 13 -->
+    <string name="achievement_level_13" translatable="false">CgkIwqi9hfYGEAIQDA</string>
     <!-- achievement Instagram Achievement -->
-    <string name="achievement_instagram_achievement" translatable="false">CgkIrJipwIIaEAIQDQ</string>
-    <!-- achievement Rate on Playstore -->
-    <string name="achievement_rate_on_playstore" translatable="false">CgkIrJipwIIaEAIQDg</string>
-    <!-- achievement More Xp -->
-    <string name="achievement_more_xp" translatable="false">CgkIrJipwIIaEAIQDw</string>
-    <!-- achievement Level 14 -->
-    <string name="achievement_level_14" translatable="false">CgkIrJipwIIaEAIQEQ</string>
-    <!-- achievement Level 15 -->
-    <string name="achievement_level_15" translatable="false">CgkIrJipwIIaEAIQEg</string>
+    <string name="achievement_instagram_achievement" translatable="false">CgkIwqi9hfYGEAIQDQ</string>
+    <!-- achievement Rate Achievement -->
+    <string name="achievement_rate_achievement" translatable="false">CgkIwqi9hfYGEAIQDg</string>
     <!-- leaderboard LeaderBoard -->
-    <string name="leaderboard_leaderboard" translatable="false">CgkIrJipwIIaEAIQBQ</string>
+    <string name="leaderboard_leaderboard" translatable="false">CgkIwqi9hfYGEAIQDw</string>
 </resources>

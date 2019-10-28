@@ -22,8 +22,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.android.synthetic.main.activity_google.*
-import kotlinx.android.synthetic.main.activity_main.products
 
 
 /**
@@ -33,15 +34,14 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
 
     private lateinit var billingClient: BillingClient
     private lateinit var productsAdapter: ProductsAdapter
-
+    private lateinit var mFirebaseRemoteConfig: FirebaseRemoteConfig
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
     protected val RC_LEADERBOARD_UI = 9004
     private val RC_ACHIEVEMENT_UI = 9003
-
-
     private lateinit var googleSignInClient: GoogleSignInClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,7 +127,6 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
                 "Give 5-star Rating \n& Check your Achievement",
                 Toast.LENGTH_SHORT
             ).show()
-
             val appPackageName = packageName // getPackageName() from Context or Activity object
             try {
                 startActivity(
@@ -152,39 +151,49 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
                 Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                     .submitScore(getString(R.string.leaderboard_leaderboard), 150000)
             }
-
         }
         */
 
         disconnectButton.setOnClickListener {
-            val developerurl =
-                "4619988116632070762" // getPackageName() from Context or Activity object
+            val app_id = mFirebaseRemoteConfig.getString("App_Id")
             try {
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("market://dev?id=$developerurl")
+                        Uri.parse("market://details?id=$app_id")
                     )
                 )
                 Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .unlock(getString(R.string.achievement_more_xp))
+                    .unlock(getString(R.string.achievement_rate_achievement))
                 Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                     .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
             } catch (anfe: ActivityNotFoundException) {
+                var developerurl = 4619988116632070762
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        //Uri.parse("https://play.google.com/store/apps/dev?id=$developerurl")
-                        Uri.parse("market://details?id=com.nightowldevelopers.onetapxpbooster3")
+                        Uri.parse("https://play.google.com/store/apps/dev?id=$developerurl")
+                        //Uri.parse("market://details?id=$app_id")
                     )
                 )
                 Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .unlock(getString(R.string.achievement_more_xp))
+                    .unlock(getString(R.string.achievement_rate_achievement))
                 Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                     .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
             }
 
         }
+
+        //region RemoteConfig
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        //Enable Debug mode for frequent fetches
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setDeveloperModeEnabled(BuildConfig.DEBUG)
+            .build()
+        mFirebaseRemoteConfig.setConfigSettings(configSettings)
+        mFirebaseRemoteConfig.setDefaults(R.xml.firebasedefaults)
+        getRemoteConfigValues()
+        //endregion
 
 
         // [START config_signin]
@@ -198,17 +207,40 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        // [START initialize_auth]
-        // Initialize Firebase Auth
+
         auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
-
         //autopopup for login on startup
         signIn()
 
     }
 
-    // [START on_start_check_user]
+    private fun getRemoteConfigValues() {
+
+        var cacheExpiration: Long = 7200//2 hours
+
+        // Allow fetch on every call for now - remove/comment on production builds
+        if (mFirebaseRemoteConfig.info.configSettings.isDeveloperModeEnabled) {
+            cacheExpiration = 0
+        }
+
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    //   Toast.makeText(this, "Fetch Succeeded", Toast.LENGTH_SHORT).show()
+                    mFirebaseRemoteConfig.activateFetched()
+                } else {
+                    //   Toast.makeText(this, "Fetch Failed", Toast.LENGTH_SHORT).show()
+                }
+
+                setRemoteConfigValues()
+            }
+    }
+
+    private fun setRemoteConfigValues() {
+        val app_id = mFirebaseRemoteConfig.getString("App_Id")
+    }
+
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -317,13 +349,16 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
             signInButton.visibility = View.GONE
             signOutAndDisconnect.visibility = View.VISIBLE
             homeLogo.visibility = View.GONE
-
             textView4.visibility = View.VISIBLE
             textView3.visibility = View.VISIBLE
             instagram.visibility = View.VISIBLE
+            textViewIG.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            leaderboard.visibility = View.VISIBLE
+            achievement.visibility = View.VISIBLE
             /*rateApp.visibility = View.VISIBLE
             textViewRate.visibility = View.VISIBLE*/
-            textViewIG.visibility = View.VISIBLE
+
 
         } else {
             status.setText(R.string.signed_out)
@@ -335,10 +370,9 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
             textView4.visibility = View.GONE
             textView3.visibility = View.GONE
             instagram.visibility = View.GONE
-            /*rateApp.visibility = View.GONE
-            textViewRate.visibility = View.GONE*/
             textViewIG.visibility = View.GONE
-
+            leaderboard.visibility = View.GONE
+            achievement.visibility = View.GONE
         }
     }
 
@@ -413,6 +447,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
                 if (responseCode == BillingClient.BillingResponse.OK) {
                     println("querySkuDetailsAsync, responseCode: $responseCode")
                     initProductAdapter(skuDetailsList)
+                    progressBar.visibility = View.GONE
                 } else {
                     println("Can't querySkuDetailsAsync, responseCode: $responseCode")
                 }
@@ -477,22 +512,21 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
             Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                 .submitScore(getString(R.string.leaderboard_leaderboard), 120000)
             Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                .unlock(getString(R.string.achievement_the_collector))
+                .unlock(getString(R.string.achievement_level_10))
             Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                 .submitScore(getString(R.string.leaderboard_leaderboard), 130000)
             Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                .unlock(getString(R.string.achievement_level_14))
+                .unlock(getString(R.string.achievement_level_11))
             Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                 .submitScore(getString(R.string.leaderboard_leaderboard), 140000)
             Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                .unlock(getString(R.string.achievement_level_15))
+                .unlock(getString(R.string.achievement_level_12))
             Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                 .submitScore(getString(R.string.leaderboard_leaderboard), 150000)
             Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                .unlock(getString(R.string.achievement_more_xp))
+                .unlock(getString(R.string.achievement_level_13))
             Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                 .submitScore(getString(R.string.leaderboard_leaderboard), 150000)
-
 
 
         } else {
