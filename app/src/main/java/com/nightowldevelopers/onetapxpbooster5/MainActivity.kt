@@ -52,6 +52,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
         leaderboard.visibility = View.GONE
         achievement.visibility = View.GONE
 
+
         // Button listeners
         signInButton.setOnClickListener(this)
         signOutButton.setOnClickListener(this)
@@ -156,30 +157,34 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
 
         disconnectButton.setOnClickListener {
             val app_id = mFirebaseRemoteConfig.getString("App_Id")
-            try {
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("market://details?id=$app_id")
+            val xp_linkbutton = mFirebaseRemoteConfig.getString("xp_linkbutton")
+            disconnectButton.isEnabled= xp_linkbutton.toBoolean()
+            if(xp_linkbutton.toBoolean()) {
+                try {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=$app_id")
+                        )
                     )
-                )
-                Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .unlock(getString(R.string.achievement_rate_achievement))
-                Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
-            } catch (anfe: ActivityNotFoundException) {
-                var developerurl = 4619988116632070762
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/dev?id=$developerurl")
-                        //Uri.parse("market://details?id=$app_id")
+                    Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+                        .unlock(getString(R.string.achievement_rate_achievement))
+                    Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+                        .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
+                } catch (anfe: ActivityNotFoundException) {
+                    var developerurl = 4619988116632070762
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/dev?id=$developerurl")
+                            //Uri.parse("market://details?id=$app_id")
+                        )
                     )
-                )
-                Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .unlock(getString(R.string.achievement_rate_achievement))
-                Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
+                    Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+                        .unlock(getString(R.string.achievement_rate_achievement))
+                    Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+                        .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
+                }
             }
 
         }
