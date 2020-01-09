@@ -49,7 +49,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
         setupBillingClient()
 
         products.visibility = View.GONE
-        leaderboard.visibility = View.GONE
+        rateApp.visibility = View.GONE
         achievement.visibility = View.GONE
 
 
@@ -58,7 +58,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
         signOutButton.setOnClickListener(this)
 
         achievement.setOnClickListener { showAchievements() }
-        leaderboard.setOnClickListener { showLeaderboard() }
+        rateApp.setOnClickListener { showLeaderboard() }
 
         instagram.setOnClickListener {
             val uri = Uri.parse("http://instagram.com/nightowldevelopers")
@@ -122,7 +122,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
 
         }
 
-        /*rateApp.setOnClickListener {
+        rateApp.setOnClickListener {
             Toast.makeText(
                 this@MainActivity,
                 "Give 5-star Rating \n& Check your Achievement",
@@ -137,7 +137,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
                     )
                 )
                 Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .unlock(getString(R.string.achievement_rate_on_playstore))
+                    .unlock(getString(R.string.achievement_rate_achievement))
                 Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                     .submitScore(getString(R.string.leaderboard_leaderboard), 150000)
             } catch (anfe: ActivityNotFoundException) {
@@ -148,12 +148,11 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
                     )
                 )
                 Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .unlock(getString(R.string.achievement_rate_on_playstore))
+                    .unlock(getString(R.string.achievement_rate_achievement))
                 Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                     .submitScore(getString(R.string.leaderboard_leaderboard), 150000)
             }
         }
-        */
 
         disconnectButton.setOnClickListener {
             val app_id = mFirebaseRemoteConfig.getString("App_Id")
@@ -167,10 +166,10 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
                             Uri.parse("market://details?id=$app_id")
                         )
                     )
-                    Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+                   /* Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                         .unlock(getString(R.string.achievement_rate_achievement))
                     Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                        .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
+                        .submitScore(getString(R.string.leaderboard_leaderboard), 80000)*/
                 } catch (anfe: ActivityNotFoundException) {
                     var developerurl = 4619988116632070762
                     startActivity(
@@ -180,10 +179,10 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
                             //Uri.parse("market://details?id=$app_id")
                         )
                     )
-                    Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+                    /*Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                         .unlock(getString(R.string.achievement_rate_achievement))
                     Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                        .submitScore(getString(R.string.leaderboard_leaderboard), 80000)
+                        .submitScore(getString(R.string.leaderboard_leaderboard), 80000)*/
                 }
             }
 
@@ -329,7 +328,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
         googleSignInClient.signOut().addOnCompleteListener(this) {
             updateUI(null)
             products.visibility = View.GONE
-            leaderboard.visibility = View.GONE
+            rateApp.visibility = View.GONE
             achievement.visibility = View.GONE
         }
     }
@@ -348,21 +347,21 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
     private fun updateUI(user: FirebaseUser?) {
         hideProgressDialog()
         if (user != null) {
-            status.text = getString(R.string.google_status_fmt, user.email)
+            status.text = getString(R.string.google_status_fmt, user.displayName)
             //detail.text = getString(R.string.firebase_status_fmt, user.uid)
             onLoadProductsClicked()
             signInButton.visibility = View.GONE
             signOutAndDisconnect.visibility = View.VISIBLE
             homeLogo.visibility = View.GONE
-            textView4.visibility = View.VISIBLE
+            textViewRate.visibility = View.VISIBLE
             textView3.visibility = View.VISIBLE
             instagram.visibility = View.VISIBLE
             textViewIG.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            leaderboard.visibility = View.VISIBLE
+            rateApp.visibility = View.VISIBLE
             achievement.visibility = View.VISIBLE
-            /*rateApp.visibility = View.VISIBLE
-            textViewRate.visibility = View.VISIBLE*/
+            rateApp.visibility = View.VISIBLE
+            textViewRate.visibility = View.VISIBLE
 
 
         } else {
@@ -372,11 +371,11 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
             homeLogo.visibility = View.VISIBLE
             signInButton.visibility = View.VISIBLE
             signOutAndDisconnect.visibility = View.GONE
-            textView4.visibility = View.GONE
+            textViewRate.visibility = View.GONE
             textView3.visibility = View.GONE
             instagram.visibility = View.GONE
             textViewIG.visibility = View.GONE
-            leaderboard.visibility = View.GONE
+            rateApp.visibility = View.GONE
             achievement.visibility = View.GONE
         }
     }
@@ -440,7 +439,7 @@ class MainActivity : BaseActivity(), PurchasesUpdatedListener, View.OnClickListe
 
     fun onLoadProductsClicked() {
         products.visibility = View.VISIBLE
-        leaderboard.visibility = View.VISIBLE
+        rateApp.visibility = View.VISIBLE
         achievement.visibility = View.VISIBLE
         if (billingClient.isReady) {
             val params = SkuDetailsParams
